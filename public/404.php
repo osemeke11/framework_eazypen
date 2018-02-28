@@ -1,0 +1,1 @@
+<?php require resource_view('404'); ?>
