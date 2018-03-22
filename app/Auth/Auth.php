@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: eazypen
- * Date: 2/26/2018
- * Time: 9:04 PM
- */
 
 namespace App\Auth;
 
@@ -14,58 +8,76 @@ class Auth
 {
     private $db;
 
-    public function __construct()
+
+
+    function __construct()
     {
         $this->db = new DB();
     }
 
     // OnLogin
-    public static function guest()
+    public static function guest($name, $email, $tableName)
     {
-        if(!isset($_SESSION['user'])){
+        if(isset($_SESSION[$tableName])){
+            return true;
+        }
+        else{
+            $_SESSION[$tableName]['names'] = $name;
+            $_SESSION[$tableName]['email'] = $email;
+            return true;
+        }
+    }
+
+    // User Detail
+    public static function User($tableName)
+    {
+        if (isset($_SESSION[$tableName]) !== false){
+            $email = $_SESSION[$tableName]['email'];
+            $name = $_SESSION[$tableName]['names'];
+            return [
+                "email" => $email,
+                "name" => $name,
+            ];
+        }
+        else{
             return false;
         }
     }
 
-    public static function User()
-    {
-        return [
-            'name' => $_SESSION['user']['names'],
-            'email' => $_SESSION['user']['email']
-        ];
-    }
-
-    // User Detail
-    public function fetchUser($name, $email)
-    {
-        if (Auth::guest() === false){
-            $_SESSION['user']['names'] = $name;
-            $_SESSION['user']['email'] = $email;
-        }
-    }
     // Login
-    public function login($email, $password)
+    public function login($tableName, $email, $password)
     {
-        $getUser = $this->db->getAllDataWhere('admin', "admin_email = '$email' AND password = '$password'");
-        foreach ($getUser as $row) {
-            $this->fetchUser($row['admin_name'], $row['admin_email']);
+        $getUser = $this->db->getAllDataWhere($tableName, "admin_email = '$email' AND password = '$password'");
+        foreach($getUser as $row){
+            $a_name = $row['admin_name'];
+//            $a_name = $row['name'];
+            $a_email = $row['admin_email'];
+//            $a_email = $row['email'];
         }
+        Auth::guest($a_name,$a_email,$tableName);
     }
 
     // SignUp
-    public function userRegistration($name, $email, $password)
+    public function signUp($name, $email, $password, $tableName)
     {
         $data = [
-            'admin_name' => $name,
-            'admin_email' => $email,
-            'password' => $password
+//            "name" => $name,
+            "admin_name" => $name,
+//            "email" => $email,
+            "admin_email" => $email,
+            "password" => $password,
         ];
-        $addUser = $this->db->addData('admin', $data);
+        $addUser = $this->db->addData($tableName, $data);
         if($addUser !== false){
-            $getUser = $this->db->getAllDataWhere('admin', "admin_email = '$email' AND password = '$password'");
-            foreach ($getUser as $row) {
-                $this->fetchUser($row['admin_name'], $row['admin_email']);
+            $getUser = $this->db->getAllDataWhere($tableName, "admin_email = '$email' AND password = '$password'");
+            foreach($getUser as $row){
+                $a_name = $row['admin_name'];
+//            $a_name = $row['name'];
+                $a_email = $row['admin_email'];
+//            $a_email = $row['email'];
             }
+//            dd($getUser);
+            Auth::guest($a_name,$a_email,$tableName);
         }
     }
 
@@ -78,9 +90,8 @@ class Auth
     // Edit User
 
     // Logout
-    public function logout()
+    public function logout($tableName)
     {
-        unset($_SESSION['user']);
-        return true;
+        unset($_SESSION[$tableName]);
     }
 }

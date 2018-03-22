@@ -6,7 +6,7 @@
  * Time: 8:33 AM
  */
 
-namespace App\Services;
+namespace App\controllers;
 
 use App\Auth\Auth;
 use App\Data\DB;
@@ -64,13 +64,13 @@ class PagesController
     }
 
     public function dashboard(){
-        if(Auth::guest() === false){
+        if(Auth::user('admin') === false){
             header("Location: " . url('login'));
         }
         else{
             $message = $this->response->getResponse();
             $data = [
-                "page_title" => Auth::User()['name'],
+                "page_title" => Auth::User('admin')['name'],
                 "message" => $message
             ];
 

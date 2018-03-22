@@ -1,29 +1,19 @@
 <?php
-use App\Services\PagesController;
-use App\Services\PostsController;
+use App\controllers\PagesController;
+use App\controllers\PostsController;
+use App\controllers\loginController;
 use App\Data\DB;
+use App\Auth\Auth;
 
 $router = new AltoRouter();
 $pages = new PagesController();
 $post = new PostsController();
+$login = new loginController();
 
 // map homepage
 $router->addRoutes(array(
     array( 'GET', '/[i:id]', function($id) use($pages) { $pages->index($id);}),
     array( 'GET', '/', function() use($pages) { $pages->index(); }),
-    array( 'GET', '/dashboard', function() use($pages) { $pages->dashboard(); }),
-    array( 'GET', '/about', function() use($pages) { $pages->about(); }),
-
-    array( 'GET', '/login', function() use($pages) { $pages->login(); }),
-    array( 'POST', '/login', function() use($post) { $post->loginPost(); }),
-
-    array( 'GET', '/register', function() use($pages) { $pages->register(); }),
-    array( 'POST', '/register', function() use($post) { $post->registerPost(); }),
-
-    array( 'GET', '/logout', function() use($post) { $post->logout(); }),
-
-    array( 'GET', '/contact', function() use($pages) { $pages->contact(); }),
-    array( 'POST', '/contact', function() use($post) { $post->contactPost(); })
 ));
 
 

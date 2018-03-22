@@ -14,12 +14,12 @@
                 <li><a href="<?= url(''); ?>">Home</a></li>
                 <li><a href="<?= url('about'); ?>">About</a></li>
                 <li><a href="<?= url('contact'); ?>">Contact</a></li>
-                <?php if(\App\Auth\Auth::guest() === false): ?>
+                <?php if(\App\Auth\Auth::user('admin') === false): ?>
                 <li><a href="<?= url('login'); ?>">Login</a></li>
                 <li><a href="<?= url('register'); ?>">Register</a></li>
                 <?php else: ?>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= \App\Auth\Auth::User()['name']; ?> <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= \App\Auth\Auth::User('admin')['name']; ?> <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="<?= url('dashboard'); ?>">Dashboard</a></li>
                             <li><a href="<?= url('logout'); ?>">Logout</a></li>

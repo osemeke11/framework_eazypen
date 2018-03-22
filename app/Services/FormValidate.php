@@ -153,8 +153,9 @@ class FormValidate
 		$check_email = $this->db->getTotalDataWhere($tableName, $key);
 		if($check_email > 0){
 			$this->error[] = "Email already taken. Try another email!";
+			return false;
 		}else{
-			return $email;
+			return true;
 		}
 	}
 

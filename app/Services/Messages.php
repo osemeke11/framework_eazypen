@@ -24,6 +24,7 @@ class Messages
         $this->db  =  new DB();
     }
 
+
     public function add($name, $message)
     {
         $name = $this->form->checkEmpty(test_input($name), "Name");
