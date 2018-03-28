@@ -1,14 +1,10 @@
 <?php
 use App\controllers\PagesController;
-use App\controllers\PostsController;
-use App\controllers\loginController;
 use App\Data\DB;
 use App\Auth\Auth;
 
 $router = new AltoRouter();
 $pages = new PagesController();
-$post = new PostsController();
-$login = new loginController();
 
 // map homepage
 $router->addRoutes(array(

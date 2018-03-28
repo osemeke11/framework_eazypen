@@ -1,7 +1,4 @@
-<?php
-    include resource_partial('head');
-    include resource_partial('header');
-?>
+
 
 <div class="container">
 
@@ -11,5 +8,3 @@
     </div>
 
 </div><!-- /.container -->
-
-<?php include resource_partial('footer'); ?>
